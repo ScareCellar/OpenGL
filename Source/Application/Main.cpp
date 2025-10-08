@@ -12,6 +12,8 @@ int main(int argc, char* argv[]) {
 
     SDL_Event e;
     bool quit = false;
+    float angle = 0;
+    float scale = 1;
 
     // MAIN LOOP
     while (!quit) {
@@ -30,6 +32,21 @@ int main(int argc, char* argv[]) {
         neu::vec3 color{ 0, 0, 0 };
         neu::GetEngine().GetRenderer().SetColor(color.r, color.g, color.b);
         neu::GetEngine().GetRenderer().Clear();
+
+        std::vector<neu::vec3> points{ {0.5f, 0.5f, 0}, {0.5f, -0.5f, 0}, {-0.5f, 0, 0} };
+        std::vector<neu::vec3> colors{ {1,1,0}, {1,0,1}, {0,1,1} };
+        // draw
+        glLoadIdentity();
+        glPushMatrix();
+
+        glTranslatef(angle, 0, 0);
+        glScalef(scale, scale, 0);
+
+        glBegin(GL_TRIANGLES);
+
+
+
+        glEnd();
 
 
         neu::GetEngine().GetRenderer().Present();
