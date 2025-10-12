@@ -14,6 +14,9 @@
     <Filter Include="Assets\Platformer">
       <UniqueIdentifier>{0347569d-48c0-471b-8c02-8fb12964f431}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{6dee1654-07fa-4646-bfa9-1e5d5b9794e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -44,5 +47,13 @@
     <None Include="..\..\Build\Assets\Platformer\Tilemaps\tilemap.json">
       <Filter>Assets\Platformer</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Shaders\basic.vert">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Build\Assets\Shaders\basic.frag">
+      <Filter>Shaders</Filter>
+    </Text>
   </ItemGroup>
 </Project>
