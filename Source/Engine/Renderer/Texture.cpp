@@ -8,7 +8,7 @@ namespace neu {
     /// </summary>
     Texture::~Texture() {
         // If texture exists, destroy texture to free GPU resources
-        if (m_texture) SDL_DestroyTexture(m_texture);
+        //if (m_texture) SDL_DestroyTexture(m_texture);
     }
 
     /// <summary>
@@ -30,9 +30,12 @@ namespace neu {
             return false;
         }
 
+        SDL_FlipSurface(surface, SDL_FLIP_VERTICAL);
+        const SDL_PixelFormatDetails* details = SDL_GetPixelFormatDetails(surface->format);
+
         // Create a GPU-side texture from the surface
         // The renderer is a friend class, so we can access m_renderer directly
-        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+        //m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
 
         // Once texture is created on GPU, the CPU-side surface can be freed
         // This saves memory as we only need the GPU texture for rendering
@@ -44,7 +47,14 @@ namespace neu {
         }
 
         // Query the texture for its dimensions
-        SDL_GetTextureSize(m_texture, &m_size.x, &m_size.y);
+        //SDL_GetTextureSize(m_texture, &m_size.x, &m_size.y);
+
+        //glGenTextures(1, &m_texture);
+        //glBindTexture(m_target, m_texture);
+
+        glTexImage2D(m_target, 0, GL_RGBA8, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+
+        SDL_DestroySurface(surface);
 
         return true;
     } 

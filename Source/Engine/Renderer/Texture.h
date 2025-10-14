@@ -2,6 +2,7 @@
 #include "Resources/Resource.h"
 #include "Math/Vector2.h"
 #include <string>
+#include <glad/glad.h>
 
 struct SDL_Texture;
 
@@ -35,11 +36,11 @@ namespace neu {
 		// Allow Renderer class to access the texture for drawing operations
 		friend class Renderer;
 
+		GLuint m_texture{ 0 };
 	private:
 		// Pointer to the underlying SDL texture object stored in GPU memory
 		// Initialized to nullptr and managed throughout the texture's lifetime
-		SDL_Texture* m_texture{ nullptr };
-
+		GLenum m_target = GL_TEXTURE_2D;
 		// The dimensions of the texture in pixels
 		vec2 m_size{ 0, 0 };
 	};

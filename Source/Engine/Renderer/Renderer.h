@@ -98,7 +98,7 @@ namespace neu {
 		/// <param name="texture">The texture to draw</param>
 		/// <param name="x">X-coordinate of the top-left corner</param>
 		/// <param name="y">Y-coordinate of the top-left corner</param>
-		void DrawTexture(class Texture& texture, float x, float y);
+		//void DrawTexture(class Texture& texture, float x, float y);
 
 		/// <summary>
 		/// Draws a texture with transformation (rotation, scale, flip).
@@ -110,7 +110,7 @@ namespace neu {
 		/// <param name="angle">Rotation angle in degrees (clockwise)</param>
 		/// <param name="scale">Uniform scale factor (1.0 = normal size)</param>
 		/// <param name="flipH">If true, flips the texture horizontally</param>
-		void DrawTexture(class Texture& texture, float x, float y, float angle, float scale = 1, bool flipH = false);
+		//void DrawTexture(class Texture& texture, float x, float y, float angle, float scale = 1, bool flipH = false);
 
 		/// <summary>
 		/// Draws a portion of a texture (specified by sourceRect) with transformation.
@@ -124,7 +124,7 @@ namespace neu {
 		/// <param name="angle">Rotation angle in degrees (clockwise)</param>
 		/// <param name="scale">Uniform scale factor (1.0 = normal size)</param>
 		/// <param name="flipH">If true, flips the texture horizontally</param>
-		void DrawTexture(class Texture& texture, const rect& sourceRect, float x, float y, float angle, float scale = 1, bool flipH = false);
+		//void DrawTexture(class Texture& texture, const rect& sourceRect, float x, float y, float angle, float scale = 1, bool flipH = false);
 
 		/// <summary>
 		/// Gets the width of the window/render target.
