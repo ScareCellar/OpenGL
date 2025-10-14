@@ -15,8 +15,8 @@ int main(int argc, char* argv[]) {
 
     //OPENGL Initialization
     //std::vector<neu::vec3> vertices{ {1, -1, 0}, {-1, -1, 0}, {0, 1, 0} };
-    std::vector<neu::vec3> colors{ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} };
-    std::vector<neu::vec2> texcoord{ {0, 0}, {0.5f, 1}, {1, 0} };
+    //std::vector<neu::vec3> colors{ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} };
+    //std::vector<neu::vec2> texcoord{ {0, 0}, {0.5f, 1}, {1, 0} };
 
     struct Vertex {
         neu::vec3 position;
@@ -33,18 +33,17 @@ int main(int argc, char* argv[]) {
     std::vector<GLuint> indices{ 0,1,2 };
     //vertex buffer
     GLuint vbo;
-
     glGenBuffers(1, &vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* vertices.size(), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
     //index buffer
     GLuint ibo;
     glGenBuffers(1, &ibo);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* indices.size(), indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
     //vertex buffer
     GLuint vao;
@@ -153,13 +152,11 @@ int main(int argc, char* argv[]) {
 
     //uniform
     GLint uniform = glGetUniformLocation(shader_program, "u_time");
-    ASSERT(uniform != -1);
+    
 
     GLint tex_uniform = glGetUniformLocation(shader_program, "u_texture");
-    ASSERT(tex_uniform != -1);
     glUniform1i(tex_uniform, texture->m_texture); //GL_TEXTURE0
-
-
+    
 
     glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
     if (!success)
@@ -187,6 +184,7 @@ int main(int argc, char* argv[]) {
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
         glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
+        
 
         // draw
         neu::GetEngine().GetRenderer().Clear();

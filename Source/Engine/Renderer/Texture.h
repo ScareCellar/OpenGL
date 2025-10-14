@@ -25,7 +25,7 @@ namespace neu {
 		/// <param name="filename">Path to the image file (e.g., "assets/textures/player.png")</param>
 		/// <param name="renderer">Reference to the Renderer that will manage this texture</param>
 		/// <returns>True if the texture was successfully loaded; otherwise, false</returns>
-		bool Load(const std::string& filename, class Renderer& renderer);
+		bool Load(const std::string& filename);
 
 		/// <summary>
 		/// Gets the dimensions of the texture in pixels.

@@ -8,7 +8,7 @@ namespace neu {
     /// </summary>
     Texture::~Texture() {
         // If texture exists, destroy texture to free GPU resources
-        //if (m_texture) SDL_DestroyTexture(m_texture);
+        if (m_texture) glDeleteTextures(1, &m_texture);
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace neu {
     /// <param name="filename">Path to the image file to load</param>
     /// <param name="renderer">Reference to the Renderer that provides the SDL_Renderer context</param>
     /// <returns>True if the texture was successfully loaded and created; otherwise, false</returns>
-    bool Texture::Load(const std::string& filename, Renderer& renderer) {
+    bool Texture::Load(const std::string& filename) {
         // Load image onto a CPU-side surface
         // SDL_image supports various formats: PNG, JPG, BMP, GIF, etc.
         SDL_Surface* surface = IMG_Load(filename.c_str());
@@ -31,31 +31,30 @@ namespace neu {
         }
 
         SDL_FlipSurface(surface, SDL_FLIP_VERTICAL);
+
+
         const SDL_PixelFormatDetails* details = SDL_GetPixelFormatDetails(surface->format);
 
-        // Create a GPU-side texture from the surface
-        // The renderer is a friend class, so we can access m_renderer directly
-        //m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+        int channels = details->bytes_per_pixel;
+        GLenum internalFormat = (channels == 4) ? GL_RGBA8 : GL_RGB8;
+        GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
 
-        // Once texture is created on GPU, the CPU-side surface can be freed
-        // This saves memory as we only need the GPU texture for rendering
-        SDL_DestroySurface(surface);
+        glGenTextures(1, &m_texture);
+        glBindTexture(m_target, m_texture);
 
-        if (!m_texture) {
-            LOG_ERROR("Could not create texture: {}", filename);
-            return false;
-        }
+        glTexImage2D(m_target, 0, internalFormat, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 
-        // Query the texture for its dimensions
-        //SDL_GetTextureSize(m_texture, &m_size.x, &m_size.y);
+        // Texture parameters
+        glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        //glGenTextures(1, &m_texture);
-        //glBindTexture(m_target, m_texture);
+        glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        glTexImage2D(m_target, 0, GL_RGBA8, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+        glActiveTexture(GL_TEXTURE0);
 
         SDL_DestroySurface(surface);
 
         return true;
-    } 
+    }
 }
