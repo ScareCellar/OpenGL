@@ -107,6 +107,12 @@
     <ClCompile Include="..\ThirdParty\glad\src\glad.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\Shader.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Program.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Random.h">
@@ -120,9 +126,6 @@
     </ClInclude>
     <ClInclude Include="Core\File.h">
       <Filter>Source\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Renderer.h">
-      <Filter>Source\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Source\Math</Filter>
@@ -159,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="Renderer\Texture.h">
       <Filter>Source\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources\Resource.h">
-      <Filter>Source\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resources\ResourceManager.h">
       <Filter>Source\Resources</Filter>
@@ -225,6 +225,15 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioChannel.h">
       <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Shader.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Program.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

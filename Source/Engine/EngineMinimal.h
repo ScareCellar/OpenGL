@@ -25,6 +25,7 @@
 
 // resources
 #include "Resources/Resource.h"
+#include "Resources/Program.h"
 #include "Resources/ResourceManager.h"
 
 // event manager
@@ -44,6 +45,7 @@
 #include "Renderer/Font.h"
 #include "Renderer/Mesh.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Shader.h"
 #include "Renderer/Text.h"
 #include "Renderer/Texture.h"
 #include "Renderer/TextureAnimation.h"

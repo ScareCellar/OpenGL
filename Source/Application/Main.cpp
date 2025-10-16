@@ -23,11 +23,12 @@ int main(int argc, char* argv[]) {
         neu::vec3 color;
         neu::vec2 texcoord;
     };
-
+    
     std::vector<Vertex> vertices{
-        { { 1,-1,0 }, {1,0,0}, {0,0} } ,
-        {{-1,-1,0}, {0,1,0}, {0.5f, 1} },
-        {{0,1,0},{0,0,1},{1,0}}
+        { { -0.5f,-0.5f,0 }, {0,1,0}, {0,0} } ,
+        { {-0.5f,0.5f,0}, {0,1,0}, {0,1} },
+        { {0.5f,0.5f,0}, {0,1,0}, {1,1} },
+        { {0.5f,-0.5f,0}, {0,1,0}, {1,0} }
     };
 
     std::vector<GLuint> indices{ 0,1,2 };
@@ -61,109 +62,36 @@ int main(int argc, char* argv[]) {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
 
-
-
-
-
-    /*
-    GLuint vbo[3];
-    glGenBuffers(3, vbo);
-
-    //color buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(neu::vec3) * colors.size(), colors.data(), GL_STATIC_DRAW);
-
-
-    //vertex buffer (position)
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(neu::vec3) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
-
-    //vertex buffer (texcoord)
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(neu::vec2) * texcoord.size(), texcoord.data(), GL_STATIC_DRAW);
-
-    //vertex array
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-
-    glEnableVertexAttribArray(0); //position
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glEnableVertexAttribArray(1); //colour
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glEnableVertexAttribArray(2); //texcoord
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-    */
-
-    //vertex shader
-    std::string vs_source;
-    neu::file::ReadTextFile("Shaders/basic.vert", vs_source);
-    const char* vs_source_cstr = vs_source.c_str();
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vs_source_cstr, NULL);
-    glCompileShader(vs);
-
-    int success;
-    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        std::string infoLog(512, '\0');  // pre-allocate space
-        GLsizei length;
-        glGetShaderInfoLog(vs, (GLsizei)infoLog.size(), &length, &infoLog[0]);
-        infoLog.resize(length);
-
-        LOG_WARNING("Shader compilation failed: {}", infoLog);
-    }
-
-    //fragment shader
-    std::string fs_source;
-    neu::file::ReadTextFile("Shaders/basic.frag", fs_source);
-    const char* fs_source_cstr = fs_source.c_str();
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fs_source_cstr, NULL);
-    glCompileShader(fs);
-
-    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        std::string infoLog(512, '\0');  // pre-allocate space
-        GLsizei length;
-        glGetShaderInfoLog(fs, (GLsizei)infoLog.size(), &length, &infoLog[0]);
-        infoLog.resize(length);
-
-        LOG_WARNING("Shader compilation failed: {}", infoLog);
-    }
+    //create shaders
+    auto vs = neu::Resources().Get<neu::Shader>("shaders/basic.vert", GL_VERTEX_SHADER);
+    auto fs = neu::Resources().Get<neu::Shader>("shaders/basic.frag", GL_FRAGMENT_SHADER);
 
     //shader program
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, vs);
-    glAttachShader(shader_program, fs);
-    glLinkProgram(shader_program);
-    glUseProgram(shader_program);
+    auto program = std::make_shared<neu::Program>();
+    program->AttachShader(vs);
+    program->AttachShader(fs);
+    program->Link();
+    program->Use();
 
     //texture
     neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/beast.png");
 
     //uniform
-    GLint uniform = glGetUniformLocation(shader_program, "u_time");
     
+    GLint uniform = glGetUniformLocation(program->m_program, "u_time");
 
-    GLint tex_uniform = glGetUniformLocation(shader_program, "u_texture");
-    glUniform1i(tex_uniform, texture->m_texture); //GL_TEXTURE0
+    GLint tex_uniform = glGetUniformLocation(program->m_program, "u_texture");
+
+    glUniform1i(tex_uniform, 0); //GL_TEXTURE0 //replaced texture->m_texture with 0 and it worked.
     
+    int success;
 
-    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
+    glGetProgramiv(program->m_program, GL_LINK_STATUS, &success);
     if (!success)
     {
         std::string infoLog(512, '\0');  // pre-allocate space
         GLsizei length;
-        glGetProgramInfoLog(shader_program, (GLsizei)infoLog.size(), &length, &infoLog[0]);
+        glGetProgramInfoLog(program->m_program, (GLsizei)infoLog.size(), &length, &infoLog[0]);
         infoLog.resize(length);
 
         LOG_WARNING("Shader link failed: {}", infoLog);
@@ -191,7 +119,7 @@ int main(int argc, char* argv[]) {
         glBindVertexArray(vao);
         //glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices.size());
 
-        glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
 
         neu::GetEngine().GetRenderer().Present();
     }
