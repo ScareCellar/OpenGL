@@ -25,7 +25,6 @@
 
 // resources
 #include "Resources/Resource.h"
-#include "Resources/Program.h"
 #include "Resources/ResourceManager.h"
 
 // event manager
@@ -49,16 +48,23 @@
 #include "Renderer/Text.h"
 #include "Renderer/Texture.h"
 #include "Renderer/TextureAnimation.h"
+#include "Resources/Program.h"
 
 // physics
 #include "Physics/Collidable.h"
 
 // third-party library
-#include <fmod.hpp>
-#include <fmod_errors.h>
-#include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
-#include <SDL3_ttf/SDL_ttf.h>
+	//fmod
+	#include <fmod.hpp>
+	#include <fmod_errors.h>
+	//SDL3
+	#include <SDL3/SDL.h>
+	#include <SDL3_image/SDL_image.h>
+	#include <SDL3_ttf/SDL_ttf.h>
+	//GLM
+	#include <glm/glm.hpp>
+	#include <glm/gtc/matrix_transform.hpp>
+	#include <glm/gtc/type_ptr.hpp>
 
 // standard library
 #include <string>
