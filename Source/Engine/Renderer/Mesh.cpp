@@ -52,7 +52,7 @@ namespace neu {
 	/// <param name="renderer">The renderer used to draw the model.</param>
 	/// <param name="transform">The transformation to apply, including position, rotation, and scale.</param>
 	void Mesh::Draw(Renderer& renderer, const Transform& transform) {
-		Draw(renderer, transform.position, transform.rotation, transform.scale);
+		//Draw(renderer, transform.position, transform.rotation, transform.scale);
 	}
 
 	/// <summary>

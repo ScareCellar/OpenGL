@@ -31,40 +31,24 @@ int main(int argc, char* argv[]) {
         { {0.5f,-0.5f,0}, {0,1,0}, {1,0} }
     };
 
-    std::vector<GLuint> indices{ 0,1,2 };
-    //vertex buffer
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
-
-    //index buffer
-    GLuint ibo;
-    glGenBuffers(1, &ibo);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), indices.data(), GL_STATIC_DRAW);
+    std::vector<GLushort> indices{ 0,1,2 };
 
     //vertex buffer
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    //neu::res_t<neu::VertexBuffer> vb = std::make_shared<neu::VertexBuffer>();
+    /*vb->CreateVertexBuffer((GLsizei)(sizeof(Vertex)* vertices.size()), (GLsizei)vertices.size(), vertices.data());
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    vb->CreateIndexBuffer(GL_UNSIGNED_SHORT, indices.size(), indices.data());
+    vb->SetAttribute(0, 3, sizeof(Vertex), offsetof(Vertex, position));
+    vb->SetAttribute(1, 3, sizeof(Vertex), offsetof(Vertex, color));
+    vb->SetAttribute(2, 2, sizeof(Vertex), offsetof(Vertex, texcoord));*/
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    auto model3d = std::make_shared<neu::Model>();
+    model3d->Load("models/sphere.obj");
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
-
+    
     //create shaders
-    auto vs = neu::Resources().Get<neu::Shader>("shaders/basic.vert", GL_VERTEX_SHADER);
-    auto fs = neu::Resources().Get<neu::Shader>("shaders/basic.frag", GL_FRAGMENT_SHADER);
+    auto vs = neu::Resources().Get<neu::Shader>("shaders/basic_lit.vert", GL_VERTEX_SHADER);
+    auto fs = neu::Resources().Get<neu::Shader>("shaders/basic_lit.frag", GL_FRAGMENT_SHADER);
 
     //shader program
     auto program = std::make_shared<neu::Program>();
@@ -73,11 +57,7 @@ int main(int argc, char* argv[]) {
     program->Link();
     program->Use();
 
-    //texture
-    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/beast.png");
-
     //uniform
-    
     GLint uniform = glGetUniformLocation(program->m_program, "u_time");
 
     GLint tex_uniform = glGetUniformLocation(program->m_program, "u_texture");
@@ -97,7 +77,23 @@ int main(int argc, char* argv[]) {
         LOG_WARNING("Shader link failed: {}", infoLog);
     }
 
-    glm::vec3 eye{ 0,0,0 };
+
+    //view Matrix
+    float aspect = (float)neu::GetEngine().GetRenderer().GetWidth() / (float)neu::GetEngine().GetRenderer().GetHeight();
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.01f, 100.0f);
+    program->SetUniform("u_projection", projection);
+
+    //texture
+    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/beast.png");
+    program->SetUniform("u_texture", 0);
+
+    //lights
+    program->SetUniform("u_ambientLight", glm::vec3{ 0.2f });
+    neu::Transform light{ {2,4,2} };
+
+    //transform
+    neu::Transform transform{ {0,0,0} };
+    neu::Transform camera{ {0,0,3} };
 
     // MAIN LOOP
     while (!quit) {
@@ -113,31 +109,35 @@ int main(int argc, char* argv[]) {
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(eye.x, eye.z, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 
         program->SetUniform("u_model", model);
 
-        eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.1f;
-        eye.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.1f;
-        glm::mat4 view = glm::lookAt(eye, eye + glm::vec3{ 0,0,-1 }, glm::vec3{ 0,1,0 });
+        camera.position.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.1f;
+        camera.position.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.1f;
+        glm::mat4 view = glm::lookAt(camera.position, camera.position + glm::vec3{ 0,0,-1 }, glm::vec3{ 0,1,0 });
         program->SetUniform("u_view", view);
+        
+        
+        program->SetUniform("u_light.color", glm::vec3{ 0,0,1 });
+        light.position.x = neu::math::sin(neu::GetEngine().GetTime().GetTime() * 10) * 5;
+        program->SetUniform("u_light.position", (glm::vec3)(view* glm::vec4(light.position, 1)));
 
-        //view Matrix
-        float aspect = (float)neu::GetEngine().GetRenderer().GetWidth() / (float)neu::GetEngine().GetRenderer().GetHeight();
-        glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.01f, 100.0f);
-        program->SetUniform("u_projection", projection);
+
 
         glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
         
 
         // draw
+        //neu::vec3 color{ 0,0,0 };
         neu::GetEngine().GetRenderer().Clear();
-        glBindVertexArray(vao);
-        //glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices.size());
+        /* vb->Draw(GL_TRIANGLES);*/
 
-        glDrawElements(GL_TRIANGLE_STRIP, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
+        //neu::GetEngine().GetRenderer().Clear();
+        model3d->Draw(GL_TRIANGLES);
+        //neu::GetEngine().GetRenderer().Present();
 
         neu::GetEngine().GetRenderer().Present();
     }
