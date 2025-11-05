@@ -1,0 +1,66 @@
+{
+  "actors": [
+    {
+      "persistent": true,
+      //"transform": [0,0,0]
+      "position": [ 0, 0, 0 ],
+      "rotation": [ 0, 180, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/sphere.obj",
+          "material": "materials/spot.mat"
+        }
+      ]
+    },
+    {
+      "persistent": true,
+      //"transform": [0,0,0]
+      "position": [ 0, 0, 0 ],
+      "rotation": [ 0, 180, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/spot.obj",
+          "material": "materials/spot.mat"
+        }
+      ]
+    },
+    {
+      "persistent": true,
+      //"transform": [0,0,0]
+      "position": [ 0, 0, 0 ],
+      "rotation": [ 0, 180, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/frog.obj",
+          "material": "materials/frog.mat"
+        }
+      ]
+    },
+    {
+      "name": "camera",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 0, 5 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "CameraComponent"
+        },
+        {
+          "type": "FirstPersonController",
+          "speed": 5,
+          "sensitivity": 0.2
+        }
+
+      ]
+    }
+  ]
+} 

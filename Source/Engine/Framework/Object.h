@@ -3,6 +3,7 @@
 // ============================================================================
 #pragma once
 #include "Core/Serializable.h"
+#include "GUI/GUI.h"
 #include <string>
 
 /// <summary>
@@ -77,7 +78,7 @@ namespace neu {
     /// }
     /// ```
     /// </summary>
-    class Object : public ISerializable {
+    class Object : public ISerializable, public GUI {
     public:
         /// <summary>
         /// Human-readable identifier for the object.
@@ -303,7 +304,6 @@ namespace neu {
         /// </summary>
         /// <returns>A unique_ptr to a new Object instance that is a deep copy of this object</returns>
         virtual std::unique_ptr<Object> Clone() = 0;
-
         /// <summary>
         /// Deserializes object state from serialized data.
         /// 
@@ -342,5 +342,7 @@ namespace neu {
         /// </summary>
         /// <param name="value">Serialized data containing the object's state information</param>
         void Read(const serial_data_t& value) override;
+
+
     };
 }

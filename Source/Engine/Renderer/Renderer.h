@@ -1,4 +1,8 @@
 #pragma once
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui.h>
+#include <backends/imgui_impl_sdl3.h>
+#include <backends/imgui_impl_opengl3.h>
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
@@ -153,7 +157,6 @@ namespace neu {
 		// SDL renderer handle used for all drawing operations
 		SDL_Renderer* m_renderer = nullptr;
 
-		
 		SDL_GLContext m_context;
 	};
 }
