@@ -142,7 +142,7 @@ namespace neu {
 		transform.UpdateGUI();
 
 		for (auto& component : m_components) {
-			if (ImGui::CollapsingHeader(component->GetClassName(), ImGuiTreeNodeFlags_DefaultOpen)) {
+			if (ImGui::CollapsingHeader(component->GetClassName().c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
 				component->UpdateGUI();
 			}
 		}

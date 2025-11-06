@@ -5,7 +5,7 @@ namespace neu {
 	public:
 		CLASS_PROTOTYPE(FirstPersonController)
 
-			bool Start() override;
+		bool Start() override;
 		void Update(float dt) override;
 
 		void Read(const serial_data_t& value) override;

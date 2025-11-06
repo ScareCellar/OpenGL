@@ -302,14 +302,13 @@ namespace neu {
         /// - Actor removal: O(n) for search, O(1) for removal once found
         /// </summary>
         std::list<std::unique_ptr<Actor>> m_actors;
+        glm::vec3 m_ambientLight{ 0.2f, 0.2f, 0.2f };
     };
 
     // ============================================================================
     // TEMPLATE IMPLEMENTATIONS
     // These must be in the header because templates are instantiated at compile time
     // ============================================================================
-    std::list<std::unique_ptr<Actor>> m_actors;
-    glm::vec3 m_ambientLight{ 0.2f, 0.2f, 0.2f };
     /// <summary>
     /// Template implementation for retrieving actors by type.
     /// 

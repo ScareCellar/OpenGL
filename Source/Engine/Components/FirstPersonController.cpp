@@ -4,7 +4,7 @@
 namespace neu {
 	FACTORY_REGISTER(FirstPersonController)
 
-		bool FirstPersonController::Start()
+	bool FirstPersonController::Start()
 	{
 		glm::vec3 euler = owner->transform.GetRotation();
 		pitch = euler.x;
@@ -17,7 +17,8 @@ namespace neu {
 		// get camera rotation
 		if (GetEngine().GetInput().GetMouseButtonDown(InputSystem::MouseButton::Right))
 		{
-			vec2 axis = GetEngine().GetInput().GetMouseDelta() * sensitivity;
+			neu::vec2 mousePos = GetEngine().GetInput().GetMouseDelta()* sensitivity;
+			glm::vec2 axis{ mousePos.x, mousePos.y };
 
 			yaw -= axis.x;
 			pitch -= axis.y;

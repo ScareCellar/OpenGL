@@ -10,7 +10,7 @@ namespace neu {
 
     struct Transform : public ISerializable, GUI {
         glm::vec3 position{ 0, 0, 0 };
-        glm::quat rotation{ glm::identity<glm::quat>() };
+        glm::quat rotationq{ glm::identity<glm::quat>() };
         glm::vec3 scale{ 1, 1, 1 };
 
         Transform() = default;
@@ -22,20 +22,20 @@ namespace neu {
         }
 
         void SetRotation(const glm::vec3& rotation) {
-            rotation = glm::quat(glm::radians(rotation));
+            rotationq = glm::quat(glm::radians(rotation));
         }
 
         void SetRotationQuat(const glm::quat& rotationq) {
-            this->rotation = rotationq;
+            this->rotationq = rotationq;
         }
 
         glm::vec3 GetRotation() const {
-            return glm::degrees(glm::eulerAngles(rotation));
+            return glm::degrees(glm::eulerAngles(rotationq));
         }
 
         glm::mat4 GetMatrix() const {
             return glm::translate(glm::mat4(1.0f), position) *
-                glm::toMat4(rotation) *
+                glm::toMat4(rotationq) *
                 glm::scale(glm::mat4(1.0f), scale);
         }
 
@@ -43,9 +43,9 @@ namespace neu {
             return GetMatrix();
         }
 
-        glm::vec3 Forward() const { return rotation * glm::vec3{ 0, 0, -1 }; }
-        glm::vec3 Up() const { return rotation * glm::vec3{ 0, 1, 0 }; }
-        glm::vec3 Right() const { return rotation * glm::vec3{ 1, 0, 0 }; }
+        glm::vec3 Forward() const { return rotationq * glm::vec3{ 0, 0, -1 }; }
+        glm::vec3 Up() const { return rotationq * glm::vec3{ 0, 1, 0 }; }
+        glm::vec3 Right() const { return rotationq * glm::vec3{ 1, 0, 0 }; }
 
 
         void Read(const serial_data_t& value) override;

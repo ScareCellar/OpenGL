@@ -158,5 +158,7 @@ namespace neu {
         /// but can vary based on system performance and frame rate fluctuations.
         /// </param>
         virtual void Update(float dt) = 0;
+
+        std::string GetClassName();
     };
 }

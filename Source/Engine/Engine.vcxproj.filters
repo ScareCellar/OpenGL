@@ -158,6 +158,9 @@
     <ClCompile Include="GUI\Editor.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Component.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Random.h">

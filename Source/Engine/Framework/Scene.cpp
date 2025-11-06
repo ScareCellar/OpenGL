@@ -55,9 +55,8 @@ namespace neu {
             });
     }
 
-    void Scene::UpdateGUI()
+    void neu::Scene::UpdateGUI()
     {
-        
     }
 
     /// <summary>

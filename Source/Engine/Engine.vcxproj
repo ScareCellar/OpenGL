@@ -227,6 +227,7 @@
     <ClCompile Include="Event\EventManager.cpp" />
     <ClCompile Include="Event\Observer.cpp" />
     <ClCompile Include="Framework\Actor.cpp" />
+    <ClCompile Include="Framework\Component.cpp" />
     <ClCompile Include="Framework\Object.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />

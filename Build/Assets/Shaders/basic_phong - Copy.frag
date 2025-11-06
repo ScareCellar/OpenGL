@@ -1,10 +1,8 @@
 #version 460 core
 
-in VS_OUT {
-	in vec2 v_texcoord;
-	in vec3 v_position;
-	in vec3 v_normal;
-} fs_in;
+in vec2 v_texcoord;
+in vec3 v_position;
+in vec3 v_normal;
 
 out vec4 f_color;
 
@@ -53,13 +51,6 @@ vec3 calculateLight(in vec3 position, in vec3 normal)
 
 void main()
 {
-	vec3 color = calculateLight(fs_in.v_position, fs_in.v_normal);
-	f_color = texture(u_texture, fs_in.v_texcoord) * vec4(color, 1);
-
-	f_color = u_ambientLight;
-	for (int i = 0; i < u_numLights; i++){
-		color += calculateLight(u_lights[i], position, normal);
-	}
-
-	f_color = texture(u_material.baseMap
+	vec3 color = calculateLight(v_position, v_normal);
+	f_color = texture(u_texture, v_texcoord) * vec4(color, 1);
 }
