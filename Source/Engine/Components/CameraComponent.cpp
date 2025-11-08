@@ -1,5 +1,6 @@
 #include "EnginePCH.h"
 namespace neu {
+	FACTORY_REGISTER(CameraComponent)
 	void CameraComponent::Update(float dt)
 	{
 		view = glm::lookAt(owner->transform.position, owner->transform.position + owner->transform.Forward(), owner->transform.Up());

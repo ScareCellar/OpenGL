@@ -18,7 +18,7 @@ namespace neu{
 		program = Resources().Get<Program>(programName);
 
 		std::string textureName;
-		SERIAL_READ_NAME(document, "texture", textureName);
+		SERIAL_READ_NAME(document, "baseMap", textureName);
 		baseMap = Resources().Get<Texture>(textureName);
 		SERIAL_READ_NAME(document, "specularMap", textureName);
 		if (!textureName.empty()) specularMap = Resources().Get<Texture>(textureName);

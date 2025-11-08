@@ -4,7 +4,10 @@ namespace neu {
 	void Editor::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
+		ImGui::NewFrame();
 	}
+
 	void Editor::UpdateGui(Scene& scene)
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_GraveAccent)) m_active = !m_active;

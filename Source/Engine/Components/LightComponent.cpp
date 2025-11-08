@@ -1,5 +1,7 @@
 #include "EnginePCH.h"
 namespace neu {
+	FACTORY_REGISTER(LightComponent)
+
 	void LightComponent::Update(float dt)
 	{
 

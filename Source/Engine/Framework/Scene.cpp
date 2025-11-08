@@ -104,21 +104,21 @@ namespace neu {
         }
 
         // get programs
-        std::set<Program> programs;
+        std::set<Program*> programs;
         for (auto& actor : m_actors) {
             auto model = actor->GetComponent<ModelRenderer>();
             if (!model || !model->active) continue;
 
             if (model->material && model->material->program) {
-                programs.insert(*model->material->program.get());
+                programs.insert(model->material->program.get());
             }
         }
 
         for (auto program : programs) {
-            program.Use();
-            program.SetUniform("u_ambient_light", glm::vec3{ 0.2f });
-            camera->SetProgram(program);
-            if (light) light->SetProgram(program, "u_light", camera->view);
+            program->Use();
+            program->SetUniform("u_ambientLight", glm::vec3{ 0.2f });
+            camera->SetProgram(*program);
+            if (light) light->SetProgram(*program, "u_light", camera->view);
         }
 
 

@@ -23,9 +23,9 @@ namespace neu {
 		model = Resources().Get<Model>(modelName);
 
 		std::string materialName;
-		SERIAL_READ_NAME(value, "model", materialName);
+		SERIAL_READ_NAME(value, "material", materialName);
 
-		//material = Resources().Get<Model>(materialName);
+		material = Resources().Get<Material>(materialName);
 	}
 	void ModelRenderer::UpdateGUI() {	}
 }
