@@ -1,7 +1,6 @@
 {
   "actors": [
     {
-      "name": "sphere",
       "persistent": true,
       "position": [ 0, 0, 0 ],
       "rotation": [ 0, 180, 0 ],
@@ -15,7 +14,6 @@
       ]
     },
     {
-      "name": "cow",
       "persistent": true,
       "position": [ 0, 0, 0 ],
       "rotation": [ 0, 180, 0 ],
@@ -29,7 +27,6 @@
       ]
     },
     {
-      "name": "frog",
       "persistent": true,
       "position": [ 0, 0, 0 ],
       "rotation": [ 0, 180, 0 ],
@@ -46,16 +43,13 @@
       "name": "camera",
       "persistent": true,
       "transform": {
-        "position": [ 5, 0, 5 ],
+        "position": [ 0, 0, 5 ],
         "rotation": [ 0, 0, 0 ],
         "scale": [ 1, 1, 1 ]
       },
       "components": [
         {
-          "type": "CameraComponent",
-          "persistent": true,
-          "position": [ 0, 0, 10 ],
-          "rotation": [0,0,0]
+          "type": "CameraComponent"
         },
         {
           "type": "FirstPersonController",
@@ -75,12 +69,7 @@
       "components": [
         {
           "type": "LightComponent",
-          "color": [ 0, 0.5, 0.5 ],
-          "intensity": 2,
-          "range": 30,
-          "lightType": "directional",
-          "innerSpotAngle": 30.0,
-          "outerSpotAngle": 50.0
+          "color": [ 0, 0, 0 ]
         }
       ]
     }

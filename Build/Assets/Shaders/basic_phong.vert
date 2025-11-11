@@ -18,10 +18,12 @@ out VS_OUT{
 
 uniform struct Material
 {
-	sampler2D texture;
+	vec3 baseColor;
+	vec3 emissiveColor;
 	float shininess;
 	vec2 tiling;
 	vec2 offset;
+	uint parameters;
 } u_material;
 
 void main()

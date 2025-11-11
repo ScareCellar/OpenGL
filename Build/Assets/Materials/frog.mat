@@ -1,5 +1,5 @@
 {
-	"program" : "shaders/basic_lit.prog",
+	"program" : "shaders/basic_phong.prog",
 	"baseMap" : "textures/frog.jpg",
 	"baseColor" : [ 1, 1, 1 ],
 	"shininess" : 128,

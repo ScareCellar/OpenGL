@@ -1,0 +1,11 @@
+{
+	"program" : "shaders/basic_phong.prog",
+	"baseMap" : "textures/space_crate_base.png",
+	"specularMap" : "textures/space_crate_specular.png",
+	"emmissiveMap": "textures/space_crate_emissive.png",
+	"emissiveColor": [ 1, 1, 1 ],
+	"baseColor" : [ 1, 1, 1 ],
+	"shininess" : 128,
+	"tiling" : [ 1, 1 ],
+	"offset" : [ 0, 0 ]
+}

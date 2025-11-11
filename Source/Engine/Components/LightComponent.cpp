@@ -9,7 +9,7 @@ namespace neu {
 	void LightComponent::SetProgram(Program& program, const std::string& name, const glm::mat4& view)
 	{
 		glm::vec3 position = glm::vec3(view * glm::vec4(owner->transform.position, 1));
-		glm::vec3 direction = owner->transform.Forward();
+		glm::vec3 direction = normalize(glm::mat3(view) * owner->transform.Forward());
 
 		program.SetUniform(name + ".type", (int)lightType);
 		program.SetUniform(name + ".position", position);
@@ -23,7 +23,7 @@ namespace neu {
 	void LightComponent::Read(const serial_data_t& value)
 	{
 		std::string type;
-		SERIAL_READ_NAME(value, "typeName", type);
+		SERIAL_READ_NAME(value, "lightType", type);
 		if (equalsIgnoreCase(type, "point")) lightType = LightType::Point;
 		else if (equalsIgnoreCase(type, "spot")) lightType = LightType::Spot;
 		else if (equalsIgnoreCase(type, "directional")) lightType = LightType::Directional;
@@ -36,16 +36,20 @@ namespace neu {
 	}
 	void LightComponent::UpdateGUI()
 	{
-		const char* types[] = {  "Directional", "Point", "Spot" };
-
+		const char* types[] = { "Point", "Directional", "Spot" };
 		ImGui::Combo("Type", (int*)&lightType, types, 3);
 
 		ImGui::ColorEdit3("Color", glm::value_ptr(color));
-		ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.1f);
-		ImGui::DragFloat("Range", &range, 0.1f, 0.1f);
+		ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.0f);
+
+		if (lightType != LightType::Directional) {
+			ImGui::DragFloat("Range", &range, 0.1f, 0.0f);
+			//ImGui::DragFloat("Direction", &direction, 0.1f, 0.0f);
+		}
+
 		if (lightType == LightType::Spot) {
-			ImGui::DragFloat("InnerSpotAngle", &innerSpotAngle, 0.1f, 0.0f, outerSpotAngle);
 			ImGui::DragFloat("OuterSpotAngle", &outerSpotAngle, 0.1f, innerSpotAngle);
+			ImGui::DragFloat("InnerSpotAngle", &innerSpotAngle, 0.1f, 0.0f, outerSpotAngle);
 
 			outerSpotAngle = math::max(innerSpotAngle, outerSpotAngle);
 		}

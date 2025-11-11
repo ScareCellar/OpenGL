@@ -83,6 +83,9 @@
     <None Include="..\..\Build\Assets\Materials\frog.mat">
       <Filter>Materials</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Materials\crate.mat">
+      <Filter>Materials</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\Build\Assets\Shaders\basic.frag">
